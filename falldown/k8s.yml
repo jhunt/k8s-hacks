@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: its-a-pod
+spec:
+  containers:
+  - image: filefrog/k8s-hacks:falldown
+    name: its-a-pod

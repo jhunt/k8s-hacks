@@ -16,6 +16,10 @@ The entrypoing, called `/waiting...` expects an optional
 positional argument indicating how many seconds to "run" before
 crashing.  This defaults to 30.
 
+
+Running it on Docker
+--------------------
+
 To run this in your local Docker daemon:
 
     docker run --rm -it filefrog/k8s-hacks:falldown
@@ -24,6 +28,21 @@ To specify a shorter or longer time frame:
 
     docker run --rm -it filefrog/k8s-hacks:falldown 5    # 5s
     docker run --rm -it filefrog/k8s-hacks:falldown 300  # 5m
+
+
+Running it on Kubernetes
+------------------------
+
+My initial reason for building this image was to show off that
+creating "just Pods" is a bad idea.  To that end, the repo comes
+with a `k8s.yml` resource spec that defines just a pod (not a
+deployment, statefulset, or daemonset to be seen!).
+
+    kubectl apply -n a-namespace -f k8s.yml
+
+
+Building (and Publishing) to Docker Hub
+---------------------------------------
 
 The Makefile handles building pushing.  For jhunt's:
 
