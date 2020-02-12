@@ -6,6 +6,8 @@ process continues to execute) until a certain number of seconds
 have elapsed, at which point it simulates a crash and exits
 non-zero.
 
+[See it on Docker Hub!][1]
+
 This is great for playing with probes, testing resurrection logic,
 etc., or (and this is why I originally wrote this) demonstrating
 why just managing Pods in Kubernetes, raw, is a Bad Idea™.
@@ -44,3 +46,6 @@ entire `k8s-hacks` project.  You can change that by setting the
    IMAGE=... TAG=latest make build push
 
 Happy Hacking!
+
+
+[1]: https://hub.docker.com/r/filefrog/k8s-hacks/tags?page=1&name=falldown
