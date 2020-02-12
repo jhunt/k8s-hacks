@@ -1,0 +1,44 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+data:
+  variable: this is a test value
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret
+data:
+  variable: aSd2ZSBnb3QgYSBzZWNyZXQ=
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: env-pod
+spec:
+  containers:
+  - image: filefrog/k8s-hacks:env
+    name: env-pod
+    env:
+      - name: FROM_THE_YAML
+        value: this is a value in the env stanza
+
+      - name: FROM_CONFIG_MAP
+        valueFrom:
+          configMapKeyRef:
+            name: config
+            key:  variable
+
+      - name: FROM_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: secret
+            key:  variable
+
+      - name: FROM_FIELD_NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath:  metadata.namespace
