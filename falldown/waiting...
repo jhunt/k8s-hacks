@@ -1,0 +1,32 @@
+#!/bin/sh
+ident=filefrog/k8s-hacks:falldown
+n=${1:-30}
+echo "$ident [$(date)] ##################################################################"
+echo "$ident [$(date)] ###"
+echo "$ident [$(date)] ###"
+echo "$ident [$(date)] ###   NOTE: This is an experiment, part of filefrog/k8s-hacks."
+echo "$ident [$(date)] ###         It really ought not be run in production."
+echo "$ident [$(date)] ###"
+echo "$ident [$(date)] ###         Check it out on GitHub:"
+echo "$ident [$(date)] ###"
+echo "$ident [$(date)] ###            https://github.com/jhunt/k8s-hacks"
+echo "$ident [$(date)] ###"
+echo "$ident [$(date)] ###"
+echo "$ident [$(date)] ##################################################################"
+echo "$ident [$(date)]"
+
+echo "$ident [$(date)] IMPORTANT system($n) starting up..."
+while [[ $n -gt 0 ]]; do
+  sleep 1
+  case $(echo $RANDOM | sha1sum | sed -e 's/\(.\).*/\1/') in
+  0|1|2|3|4|5) echo "$ident [$(date)] checking on background process tasks..." ;;
+  6|7)         echo "$ident [$(date)] launching new tasks in the background..." ;;
+  8)           echo "$ident [$(date)] reticulating splines..." ;;
+  9|a|b|c)     echo "$ident [$(date)] frobbing the widget pool to free up memory..." ;;
+  d|e|f)       echo "$ident [$(date)] nothing to do; going back to sleep..." ;;
+  esac
+
+  n=$(expr $n - 1)
+done
+echo "$ident [$(date)] CRASHED!"
+exit 1
