@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: aikido
+  labels:
+    blame: jhunt
+
+spec:
+  selector:
+    matchLabels:
+      app: aikido
+      blame: jhunt
+  template:
+    metadata:
+      labels:
+        app:   aikido
+        blame: jhunt
+    spec:
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+        - key: node-role.kubernetes.io/master
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
+
+      initContainers:
+        - name: hostfs
+          image: ubuntu
+          command:
+            - /bin/sh
+            - -xc
+            - |
+              (echo -n "hi, my name is: "; hostname)> /host/etc/hi-from-the-pod \
+              && echo done \
+              && ls -l /host/etc/hi-from-the-pod \
+              && cat /host/etc/hi-from-the-pod
+          volumeMounts:
+            - name: hostfs
+              mountPath: /host
+
+      containers:
+        - name: sleep
+          image: starkandwayne/pause
+
+      volumes:
+        - name: hostfs
+          hostPath:
+            path: /
