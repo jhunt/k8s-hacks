@@ -27,7 +27,7 @@ spec:
 
       initContainers:
         - name: hostfs
-          image: ubuntu
+          image: alpine
           command:
             - /bin/sh
             - -xc
@@ -42,7 +42,7 @@ spec:
 
       containers:
         - name: sleep
-          image: starkandwayne/pause
+          image: filefrog/k8s-hacks:pause
 
       volumes:
         - name: hostfs
