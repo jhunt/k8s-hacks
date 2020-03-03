@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: logs-a-lot
+spec:
+  containers:
+  - image: filefrog/k8s-hacks:logx
+    name: logx
+    command:
+      - /logx
+      - 102400
