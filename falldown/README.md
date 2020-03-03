@@ -12,7 +12,7 @@ This is great for playing with probes, testing resurrection logic,
 etc., or (and this is why I originally wrote this) demonstrating
 why just managing Pods in Kubernetes, raw, is a Bad Idea™.
 
-The entrypoing, called `/waiting...` expects an optional
+The entrypoint, called `/waiting...` expects an optional
 positional argument indicating how many seconds to "run" before
 crashing.  This defaults to 30.
 
