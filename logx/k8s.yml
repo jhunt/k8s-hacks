@@ -8,4 +8,4 @@ spec:
     name: logx
     command:
       - /logx
-      - 102400
+      - "102400"
