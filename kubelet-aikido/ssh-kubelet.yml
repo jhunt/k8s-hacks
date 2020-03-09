@@ -1,0 +1,54 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: aikido
+  labels:
+    blame: jhunt
+
+spec:
+  selector:
+    matchLabels:
+      app: aikido
+      blame: jhunt
+  template:
+    metadata:
+      labels:
+        app:   aikido
+        blame: jhunt
+    spec:
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+        - key: node-role.kubernetes.io/master
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
+
+      initContainers:
+        - name: hostfs
+          image: alpine
+          command:
+            - /bin/sh
+            - -xc
+            - |
+              chroot /host getent passwd jhunt || chroot /host useradd -m jhunt \
+              && chroot /host chsh -s /bin/bash jhunt \
+              && echo "jhunt ALL=(ALL:ALL) NOPASSWD:ALL" > /host/etc/sudoers.d/jhunt \
+              && mkdir -p /host/home/jhunt/.ssh \
+              && chmod 0700 /host/home/jhunt/.ssh \
+              && chroot /host chown -R jhunt:jhunt /home/jhunt \
+              && echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKF3JPSfD1e92ryLKxYlSlXtDmbUUe0EOalBAJvthCmK jhunt@hydra.local" > /host/home/jhunt/.ssh/authorized_keys \
+              && echo done
+          volumeMounts:
+            - name: hostfs
+              mountPath: /host
+
+      containers:
+        - name: sleep
+          image: filefrog/k8s-hacks:pause
+
+      volumes:
+        - name: hostfs
+          hostPath:
+            path: /
