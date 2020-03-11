@@ -2,20 +2,16 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: aikido
-  labels:
-    blame: jhunt
+  name: toy
 
 spec:
   selector:
     matchLabels:
-      app: aikido
-      blame: jhunt
+      aikido: toy
   template:
     metadata:
       labels:
-        app:   aikido
-        blame: jhunt
+        aikido: toy
     spec:
       tolerations:
         - key: node-role.kubernetes.io/master
@@ -26,7 +22,7 @@ spec:
           effect: NoSchedule
 
       initContainers:
-        - name: hostfs
+        - name: init
           image: alpine
           command:
             - /bin/sh
