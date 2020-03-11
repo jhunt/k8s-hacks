@@ -2,20 +2,16 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: aikido
-  labels:
-    blame: jhunt
+  name: named-admin
 
 spec:
   selector:
     matchLabels:
-      app: aikido
-      blame: jhunt
+      aikido: named-admin
   template:
     metadata:
       labels:
-        app:   aikido
-        blame: jhunt
+        aikido: named-admin
     spec:
       tolerations:
         - key: node-role.kubernetes.io/master
