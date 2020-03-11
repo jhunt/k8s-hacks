@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: sysctl
+spec:
+  selector:
+    matchLabels:
+      aikido: sysctl
+  template:
+    metadata:
+      labels:
+        aikido: sysctl
+    spec:
+
+      # this is important, as it puts us in the SAME
+      # network ns as the host, which we need to get at
+      # things like tcp_tw_recycle...
+      #
+      hostNetwork: yes
+      initContainers:
+        - name: hostfs
+          image: alpine
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "currently," \
+              && sysctl net.ipv4.tcp_tw_recycle \
+              && echo "disabling net.ipv4.tcp_tw_recycle." \
+              && sysctl net.ipv4.tcp_tw_recycle=0 \
+              && echo done
+
+          # we have to be privileged to enable write
+          # access to /proc, for tuning...
+          #
+          securityContext:
+            privileged: true
+
+      containers:
+        - name: sleep
+          image: filefrog/k8s-hacks:pause
